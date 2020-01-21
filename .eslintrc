@@ -1,4 +1,4 @@
-module.exports = {
+{
   "parser": "babel-eslint",
   "extends": [
     "airbnb",
@@ -10,12 +10,12 @@ module.exports = {
   "rules": {
     "prettier/prettier": [
       "error",
-      {
-        "singleQuote": true,
-        "trailingComma": "all",
-      }
-    ],
-    "react/prefer-stateless-function": "off",
+    {
+      "singleQuote": true,
+      "trailingCommas": "all"
+    }
+  ],
+  "react/prefer-stateless-function": "off",
     "react/jsx-filename-extension": "off",
     "no-use-before-define": "off",
     "react/jsx-closing-bracket-location": "off",
