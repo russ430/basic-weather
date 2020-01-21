@@ -18,8 +18,12 @@ module.exports = {
       },
       {
         test: /\.css$/i,
-        use: ['style-loader', 'css-loader'],
+        use: ['style-loader', 'css-loader']
       },
+      {
+        test: /\.svg$/,
+        use: ['@svgr/webpack']
+      }
     ]
   },
   plugins: [
@@ -27,4 +31,4 @@ module.exports = {
       template: './src/index.html'
     })
   ]
-}
+};
