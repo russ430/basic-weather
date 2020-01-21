@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 import DayCard from '../containers/DayCard/DayCard';
 
@@ -44,13 +44,19 @@ const Button = styled.button`
 `;
 
 const App = () => {
+  const [zip, setZip] = useState('02453');
+
+  const changedInputHandler = e => {
+    setZip(e.target.value);
+  };
+
   return (
     <Container>
       <Title>What's the Weather like?</Title>
       <Subtitle>Type in your Zip Code below</Subtitle>
-      <Input />
+      <Input maxLength="5" onChange={e => changedInputHandler(e)} />
       <Button type="button">Enter</Button>
-      <DayCard />
+      <DayCard zip={zip} />
     </Container>
   );
 };

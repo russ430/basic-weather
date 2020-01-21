@@ -27,15 +27,6 @@ const Current = styled.h4`
   margin: 0.5rem 0;
 `;
 
-const Highs = styled.h4`
-  font-size: 1.8rem;
-  margin: 0.5rem 0;
-
-  & span {
-    color: darkgrey;
-  }
-`;
-
 const Icon = styled(Sunny)`
   width: 10rem;
   margin: 0.5rem 0;
@@ -43,10 +34,14 @@ const Icon = styled(Sunny)`
 
 const KEY = '3726536d343884f1faa1c0836f6e3688';
 
-const DayCard = () => {
+const APP_ID = '69911451';
+const APP_KEY = '4a2ac00be479232fe1d392bb09dae7f3';
+
+const DayCard = props => {
   const [data, setData] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
-  const [currentTemp, setCurrentTemp] = useState(null);
+  const [currentTemp, setCurrentTemp] = useState('0');
+  const [feelsLike, setFeelsLike] = useState('0');
 
   const convertKelvin = temp => {
     const farenheight = (9 / 5) * (temp - 273) + 32;
@@ -54,25 +49,30 @@ const DayCard = () => {
   };
 
   const getData = () => {
+    // axios
+    //   .get(`https://api.openweathermap.org/data/2.5/weather?zip=${props.zip},us&appid=${KEY}`)
+    //   .then(response1 => {
+    //     setData(response1.data);
+    //     const current = convertKelvin(response1.data.main.temp);
+    //     setCurrentTemp(current);
+    //     setIsLoading(false);
+    //   })
+    //   .catch(error => console.log(error));
     axios
-      .get(`https://api.openweathermap.org/data/2.5/weather?zip=02453,us&appid=${KEY}`)
+      .get(
+        `http://api.weatherunlocked.com/api/current/us.${props.zip}?app_id=${APP_ID}&app_key=${APP_KEY}`
+      )
       .then(response => {
-        setData(response.data);
-        setIsLoading(false);
-        const current = convertKelvin(response.data.main.temp);
-        setCurrentTemp(current);
-      })
-      .catch(error => console.log(error));
+        console.log(response);
+        setCurrentTemp(response.data.temp_f.toFixed(0));
+        setFeelsLike(response.data.feelslike_f.toFixed(0));
+      });
   };
 
   useEffect(() => {
     getData();
+    console.log('[useEffect]');
   }, []);
-
-  if (isLoading) {
-    return null;
-  }
-  console.log(data);
 
   return (
     <Card>
@@ -80,9 +80,7 @@ const DayCard = () => {
       <Time>1:30PM</Time>
       <Icon />
       <Current>{currentTemp}°</Current>
-      <Highs>
-        34°/<span>18°</span>
-      </Highs>
+      <Current>Feels like: {feelsLike}°</Current>
     </Card>
   );
 };
