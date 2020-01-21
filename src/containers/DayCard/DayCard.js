@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
+import axios from 'axios';
 import Sunny from '../../assets/svgs/sunny.svg';
 
 const Card = styled.div`
@@ -40,13 +41,45 @@ const Icon = styled(Sunny)`
   margin: 0.5rem 0;
 `;
 
+const KEY = '3726536d343884f1faa1c0836f6e3688';
+
 const DayCard = () => {
+  const [data, setData] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
+  const [currentTemp, setCurrentTemp] = useState(null);
+
+  const convertKelvin = temp => {
+    const farenheight = (9 / 5) * (temp - 273) + 32;
+    return farenheight.toFixed(0);
+  };
+
+  const getData = () => {
+    axios
+      .get(`https://api.openweathermap.org/data/2.5/weather?zip=02453,us&appid=${KEY}`)
+      .then(response => {
+        setData(response.data);
+        setIsLoading(false);
+        const current = convertKelvin(response.data.main.temp);
+        setCurrentTemp(current);
+      })
+      .catch(error => console.log(error));
+  };
+
+  useEffect(() => {
+    getData();
+  }, []);
+
+  if (isLoading) {
+    return null;
+  }
+  console.log(data);
+
   return (
     <Card>
-      <Day>Monday</Day>
+      <Day>Today</Day>
       <Time>1:30PM</Time>
       <Icon />
-      <Current>22°</Current>
+      <Current>{currentTemp}°</Current>
       <Highs>
         34°/<span>18°</span>
       </Highs>
