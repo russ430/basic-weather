@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import axios from 'axios';
 import Icon from './Icon/Icon';
 import DataBox from './DataBox/DataBox';
+import Time from './Time/Time';
 
 const Card = styled.div`
   background-color: rgba(255, 255, 255, 0.95);
@@ -18,11 +19,6 @@ const Card = styled.div`
 const Day = styled.h3`
   font-size: 2.5rem;
   margin: 0.5rem 0 0 0;
-`;
-
-const Time = styled.h4`
-  font-size: 2rem;
-  font-weight: 400;
 `;
 
 const APP_ID = '69911451';
@@ -47,24 +43,6 @@ const DayCard = props => {
     setSunrise('...');
     setSunset('...');
     setWxCode('...');
-  };
-
-  const timeNow = new Date();
-  const hours = timeNow.getHours();
-  const minutes = timeNow.getMinutes();
-  const time = () => {
-    let newMin = minutes;
-    if (minutes < 10) {
-      newMin = `0${minutes}`;
-    }
-    if (hours === 12) {
-      return `${hours}:${newMin} PM`;
-    }
-    if (hours > 12) {
-      const newHour = hours - 12;
-      return `${newHour}:${newMin} PM`;
-    }
-    return `${hours}:${newMin} AM`;
   };
 
   const forecast = `http://api.weatherunlocked.com/api/forecast/us.${props.zip}?app_id=${APP_ID}&app_key=${APP_KEY}`;
@@ -126,7 +104,7 @@ const DayCard = props => {
   return (
     <Card>
       <Day>Today</Day>
-      <Time>{time()}</Time>
+      <Time />
       <Icon code={wxCode} />
       <DataBox label1="Current" data1={currentTemp} label2="Feels Like" data2={feelsLike} />
       <DataBox border="top" label1="Hi" data1={highTemp} label2="Low" data2={lowTemp} />
