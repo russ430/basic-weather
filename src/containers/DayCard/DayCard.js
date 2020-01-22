@@ -38,15 +38,13 @@ const APP_ID = '69911451';
 const APP_KEY = '4a2ac00be479232fe1d392bb09dae7f3';
 
 const DayCard = props => {
-  const [data, setData] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const [currentTemp, setCurrentTemp] = useState('0');
   const [feelsLike, setFeelsLike] = useState('0');
-
-  const convertKelvin = temp => {
-    const farenheight = (9 / 5) * (temp - 273) + 32;
-    return farenheight.toFixed(0);
-  };
+  const [highTemp, setHighTemp] = useState('0');
+  const [lowTemp, setLowTemp] = useState('0');
+  const [sunrise, setSunrise] = useState('0');
+  const [sunset, setSunset] = useState('0');
 
   const getData = () => {
     // axios
@@ -63,9 +61,25 @@ const DayCard = props => {
         `http://api.weatherunlocked.com/api/current/us.${props.zip}?app_id=${APP_ID}&app_key=${APP_KEY}`
       )
       .then(response => {
-        console.log(response);
         setCurrentTemp(response.data.temp_f.toFixed(0));
         setFeelsLike(response.data.feelslike_f.toFixed(0));
+      });
+
+    axios
+      .get(
+        `http://api.weatherunlocked.com/api/forecast/us.${props.zip}?app_id=${APP_ID}&app_key=${APP_KEY}`
+      )
+      .then(response => {
+        const sunriseData = response.data.Days[1].sunrise_time;
+        const newSunrise = sunriseData.slice(1);
+        setSunrise(`${newSunrise}AM`);
+        const sunsetData = response.data.Days[1].sunset_time;
+        const sunsetFirst = sunsetData.slice(0, 2);
+        const sunsetSecond = sunsetData.slice(2);
+        const newSunset = sunsetFirst - 12 + sunsetSecond;
+        setSunset(`${newSunset}PM`);
+        setHighTemp(response.data.Days[1].temp_max_f.toFixed(0));
+        setLowTemp(response.data.Days[1].temp_min_f.toFixed(0));
       });
   };
 
@@ -79,8 +93,13 @@ const DayCard = props => {
       <Day>Today</Day>
       <Time>1:30PM</Time>
       <Icon />
-      <Current>{currentTemp}°</Current>
+      <Current>Current Temp: {currentTemp}°</Current>
       <Current>Feels like: {feelsLike}°</Current>
+      <Current>
+        {lowTemp}°/{highTemp}°
+      </Current>
+      <Current>Sunrise: {sunrise}</Current>
+      <Current>Sunset: {sunset}</Current>
     </Card>
   );
 };
