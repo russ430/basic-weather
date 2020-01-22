@@ -29,7 +29,7 @@ const icon = props => {
 
   const Icon = styled(iconSVG)`
     width: 10rem;
-    margin: 0.5rem 0;
+    margin: 1.5rem 0;
   `;
 
   return <Icon />;

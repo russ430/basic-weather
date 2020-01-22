@@ -38,6 +38,7 @@
     "react/no-access-state-in-setstate": "off",
     "react/no-unescaped-entities": "off",
     "no-restricted-syntax": "off",
-    "guard-for-in": "off"
+    "guard-for-in": "off",
+    "no-console": "off"
   }
 }
