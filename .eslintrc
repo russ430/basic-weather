@@ -39,6 +39,8 @@
     "react/no-unescaped-entities": "off",
     "no-restricted-syntax": "off",
     "guard-for-in": "off",
-    "no-console": "off"
+    "no-console": "off",
+    "array-callback-return": "off",
+    "no-alert": "off"
   }
 }

@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import axios from 'axios';
-import DayCard from '../containers/DayCard/DayCard';
+import DayCard from '../components/DayCard/DayCard';
 import bg from '../assets/img/river-mountain.jpg';
-import DayCards from '../containers/DayCards/DayCards';
+import DayCards from '../components/DayCards/DayCards';
+import Invalid from '../utils/Invalid/Invalid';
 
 const Container = styled.div`
   height: 100vh;
@@ -51,18 +52,12 @@ const APP_KEY = '4a2ac00be479232fe1d392bb09dae7f3';
 
 const App = () => {
   const [zip, setZip] = useState('');
+  const [isLoading, setIsLoading] = useState(true);
   const [showToday, setShowToday] = useState(false);
   const [showForecast, setShowForecast] = useState(false);
   const [forecastData, setForecastData] = useState([]);
-  const [currentDayData, setCurrentDayData] = useState({
-    wx: 0,
-    current: '...',
-    feels: '...',
-    hi: '...',
-    low: '...',
-    humidity: '...',
-    windspd: '...'
-  });
+  const [currentDayData, setCurrentDayData] = useState(null);
+  const [invalidZip, setInvalidZip] = useState(false);
 
   const onInputChangedHandler = e => {
     setZip(e.target.value);
@@ -74,7 +69,11 @@ const App = () => {
 
   const checkZip = z => {
     if (z.length === 5) {
+      setInvalidZip(false);
       getData(z);
+    } else {
+      // eslint-disable-next-line no-undef
+      setInvalidZip(true);
     }
   };
 
@@ -90,9 +89,10 @@ const App = () => {
       return axios.get(forecast);
     };
 
-    axios.all([getCurrent(), getForecast()]).then(
-      axios
-        .spread((cur, fore) => {
+    axios
+      .all([getCurrent(), getForecast()])
+      .then(
+        axios.spread((cur, fore) => {
           const today = new Date();
           const todaysDate = today.getDate();
           const forecastDataArray = [];
@@ -100,7 +100,7 @@ const App = () => {
           fore.data.Days.map(obj => {
             // checking if first array in data API is for today or yesterday (via today's date vs. array's date)
             const objDate = +obj.date.slice(0, 2);
-            if (objDate >= todaysDate) {
+            if (objDate > todaysDate) {
               const { date, sunrise_time: sunrise, sunset_time: sunset } = obj;
               const wx = obj.Timeframes[4].wx_code;
               const sunsetFirst = sunset.slice(0, 2);
@@ -145,7 +145,8 @@ const App = () => {
           };
           setCurrentDayData(currentDay);
         })
-    ).then(setShowToday(true));
+      )
+      .then(setShowToday(true), setIsLoading(false));
   };
 
   const showForecastHandler = () => {
@@ -154,18 +155,24 @@ const App = () => {
 
   let today = null;
   if (showToday) {
-    today = <DayCard data={currentDayData} />;
+    today = <DayCard loading={isLoading} data={currentDayData} />;
   }
 
   let forecast = null;
   if (showForecast) {
-    forecast = <DayCards data={forecastData} />;
+    forecast = <DayCards loading={isLoading} data={forecastData} />;
+  }
+
+  let invalid = null;
+  if (invalidZip) {
+    invalid = <Invalid />;
   }
 
   return (
     <Container>
       <Title>What's the Weather like?</Title>
       <Subtitle>(enter US zip code only, please)</Subtitle>
+      {invalid}
       <Input
         maxLength="5"
         placeholder="Show me the weather in..."
@@ -174,7 +181,7 @@ const App = () => {
       <Button type="button" onClick={onClickZipSubmit}>
         Let's see it!
       </Button>
-      <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+      <div style={{ display: 'flex', justifyContent: 'center' }}>
         {today}
         {forecast}
       </div>

@@ -2,7 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 
 const Time = styled.h4`
-  font-size: 2rem;
+  font-size: 1.5rem;
   font-weight: 400;
 `;
 

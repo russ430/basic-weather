@@ -5,7 +5,7 @@ const DayCards = props => {
   return (
     <div style={{ display: 'flex' }}>
       {props.data.map(day => {
-        return <DayCard type="forecast" data={day} key={day.date} />;
+        return <DayCard loading={props.loading} type="forecast" data={day} key={day.date} />;
       })}
     </div>
   );
