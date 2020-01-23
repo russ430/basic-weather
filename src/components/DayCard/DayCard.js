@@ -39,7 +39,7 @@ const DayCard = props => {
     const weekDay = day.getDay();
 
     let loading = null;
-    if (props.loading) {
+    if (props.data === null) {
       loading = <Spinner />;
     } else {
       loading = (

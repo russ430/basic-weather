@@ -5,6 +5,7 @@ import DayCard from '../components/DayCard/DayCard';
 import bg from '../assets/img/river-mountain.jpg';
 import DayCards from '../components/DayCards/DayCards';
 import Invalid from '../utils/Invalid/Invalid';
+import Button from '../utils/Button/Button';
 
 const Container = styled.div`
   height: 100vh;
@@ -33,18 +34,10 @@ const Subtitle = styled.h2`
 const Input = styled.input`
   padding: 0.5rem 2rem;
   font-size: 2rem;
-  border: 1px solid #eee;
   background-color: rgba(255, 255, 255, 0.7);
-`;
-
-const Button = styled.button`
-  padding: 1rem 1.5rem;
-  background-color: #fff;
   border: none;
-  cursor: pointer;
-  color: black;
   border-radius: 0.3rem;
-  margin: 0.5rem 0;
+  margin-top: 0.5rem;
 `;
 
 const APP_ID = '69911451';
@@ -52,10 +45,9 @@ const APP_KEY = '4a2ac00be479232fe1d392bb09dae7f3';
 
 const App = () => {
   const [zip, setZip] = useState('');
-  const [isLoading, setIsLoading] = useState(true);
   const [showToday, setShowToday] = useState(false);
   const [showForecast, setShowForecast] = useState(false);
-  const [forecastData, setForecastData] = useState([]);
+  const [forecastData, setForecastData] = useState(null);
   const [currentDayData, setCurrentDayData] = useState(null);
   const [invalidZip, setInvalidZip] = useState(false);
 
@@ -70,6 +62,8 @@ const App = () => {
   const checkZip = z => {
     if (z.length === 5) {
       setInvalidZip(false);
+      setCurrentDayData(null);
+      setShowForecast(false);
       getData(z);
     } else {
       // eslint-disable-next-line no-undef
@@ -146,48 +140,37 @@ const App = () => {
           setCurrentDayData(currentDay);
         })
       )
-      .then(setShowToday(true), setIsLoading(false));
+      .then(setShowToday(true))
+      .catch(error => {
+        console.log(error);
+        setShowToday(false);
+        // eslint-disable-next-line no-undef
+        alert('You have entered a non-existent US Zip Code');
+      });
   };
 
   const showForecastHandler = () => {
     setShowForecast(!showForecast);
   };
 
-  let today = null;
-  if (showToday) {
-    today = <DayCard loading={isLoading} data={currentDayData} />;
-  }
-
-  let forecast = null;
-  if (showForecast) {
-    forecast = <DayCards loading={isLoading} data={forecastData} />;
-  }
-
-  let invalid = null;
-  if (invalidZip) {
-    invalid = <Invalid />;
-  }
-
   return (
     <Container>
       <Title>What's the Weather like?</Title>
       <Subtitle>(enter US zip code only, please)</Subtitle>
-      {invalid}
+      {invalidZip ? <Invalid /> : null}
       <Input
         maxLength="5"
         placeholder="Show me the weather in..."
         onChange={e => onInputChangedHandler(e)}
       />
-      <Button type="button" onClick={onClickZipSubmit}>
+      <Button type="button" clicked={onClickZipSubmit}>
         Let's see it!
       </Button>
-      <div style={{ display: 'flex', justifyContent: 'center' }}>
-        {today}
-        {forecast}
+      <div style={{ display: 'flex', justifyContent: 'center', flexWrap: 'wrap' }}>
+        {showToday ? <DayCard data={currentDayData} /> : null}
+        {showForecast ? <DayCards data={forecastData} /> : null}
       </div>
-      <button type="button" onClick={showForecastHandler}>
-        See Forecast
-      </button>
+      {forecastData !== null ? <Button clicked={showForecastHandler}>See Forecast</Button> : null}
     </Container>
   );
 };
