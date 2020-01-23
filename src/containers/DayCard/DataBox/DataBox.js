@@ -5,7 +5,7 @@ const Container = styled.div`
   display: flex;
   width: 100%;
   padding: 1rem 0;
-  border-top: ${props => (props.border ? '1px solid #eee' : null)};
+  border-top: ${props => (props.border === 'top' ? '1px solid #eee' : null)};
 `;
 
 const Box = styled.div`

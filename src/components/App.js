@@ -51,9 +51,9 @@ const APP_KEY = '4a2ac00be479232fe1d392bb09dae7f3';
 
 const App = () => {
   const [zip, setZip] = useState('');
-  const [showDayCard, setShowDayCard] = useState(false);
-  const [submitZip, setSubmitZip] = useState('');
-  const [forecastData, setForecastData] = useState('');
+  const [showToday, setShowToday] = useState(false);
+  const [showForecast, setShowForecast] = useState(false);
+  const [forecastData, setForecastData] = useState([]);
   const [currentDayData, setCurrentDayData] = useState({
     wx: 0,
     current: '...',
@@ -74,8 +74,6 @@ const App = () => {
 
   const checkZip = z => {
     if (z.length === 5) {
-      setSubmitZip(z);
-      setShowDayCard(true);
       getData(z);
     }
   };
@@ -93,28 +91,76 @@ const App = () => {
     };
 
     axios.all([getCurrent(), getForecast()]).then(
-      axios.spread((cur, fore) => {
-        const sunriseData = fore.data.Days[1].sunrise_time;
-        const newSunrise = sunriseData.slice(1);
-        const sunsetData = fore.data.Days[1].sunset_time;
-        const sunsetFirst = sunsetData.slice(0, 2);
-        const sunsetSecond = sunsetData.slice(2);
-        const newSunset = sunsetFirst - 12 + sunsetSecond;
-        console.log(fore.data);
+      axios
+        .spread((cur, fore) => {
+          const today = new Date();
+          const todaysDate = today.getDate();
+          const forecastDataArray = [];
+          // refactoring forecast Data from API to proper format
+          fore.data.Days.map(obj => {
+            // checking if first array in data API is for today or yesterday (via today's date vs. array's date)
+            const objDate = +obj.date.slice(0, 2);
+            if (objDate >= todaysDate) {
+              const { date, sunrise_time: sunrise, sunset_time: sunset } = obj;
+              const wx = obj.Timeframes[4].wx_code;
+              const sunsetFirst = sunset.slice(0, 2);
+              const sunsetSecond = sunset.slice(2);
+              const newSunset = `${sunsetFirst - 12 + sunsetSecond} PM`;
+              const newSunrise = `${sunrise.slice(1)} AM`;
+              const newHi = `${obj.temp_max_f.toFixed(0)}°`;
+              const newLow = `${obj.temp_min_f.toFixed(0)}°`;
+              const newPrecip = `${obj.prob_precip_pct}%`;
+              const newWind = `${obj.windspd_max_mph}mph`;
+              const newObj = {
+                date,
+                hi: newHi,
+                low: newLow,
+                sunrise: newSunrise,
+                sunset: newSunset,
+                precip: newPrecip,
+                wind: newWind,
+                wx
+              };
+              forecastDataArray.push(newObj);
+            }
+          });
 
-        const currentDay = {
-          wx: cur.data.wx_code,
-          current: `${cur.data.temp_f.toFixed(0)}°`,
-          feels: `${cur.data.feelslike_f.toFixed(0)}°`,
-          hi: `${fore.data.Days[0].temp_max_f.toFixed(0)}°`,
-          low: `${fore.data.Days[0].temp_min_f.toFixed(0)}°`,
-          humidity: `${cur.data.humid_pct}%`,
-          windspd: `${cur.data.windspd_mph}mph`
-        };
-        setCurrentDayData(currentDay);
-      })
-    );
+          setForecastData(forecastDataArray);
+
+          let currentHi = `${fore.data.Days[0].temp_max_f.toFixed(0)}°`;
+          let currentLow = `${fore.data.Days[0].temp_min_f.toFixed(0)}°`;
+          if (fore.data.Days[0].Timeframes.length < 8) {
+            currentHi = `${fore.data.Days[1].temp_max_f.toFixed(0)}°`;
+            currentLow = `${fore.data.Days[1].temp_min_f.toFixed(0)}°`;
+          }
+
+          const currentDay = {
+            wx: cur.data.wx_code,
+            current: `${cur.data.temp_f.toFixed(0)}°`,
+            feels: `${cur.data.feelslike_f.toFixed(0)}°`,
+            hi: currentHi,
+            low: currentLow,
+            humidity: `${cur.data.humid_pct}%`,
+            windspd: `${cur.data.windspd_mph.toFixed(0)}mph`
+          };
+          setCurrentDayData(currentDay);
+        })
+    ).then(setShowToday(true));
   };
+
+  const showForecastHandler = () => {
+    setShowForecast(!showForecast);
+  };
+
+  let today = null;
+  if (showToday) {
+    today = <DayCard data={currentDayData} />;
+  }
+
+  let forecast = null;
+  if (showForecast) {
+    forecast = <DayCards data={forecastData} />;
+  }
 
   return (
     <Container>
@@ -128,9 +174,13 @@ const App = () => {
       <Button type="button" onClick={onClickZipSubmit}>
         Let's see it!
       </Button>
-      <div style={{ display: 'flex' }}>
-        <DayCard data={currentDayData} />
+      <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+        {today}
+        {forecast}
       </div>
+      <button type="button" onClick={showForecastHandler}>
+        See Forecast
+      </button>
     </Container>
   );
 };
