@@ -6,15 +6,18 @@ import bg from '../assets/img/river-mountain.jpg';
 import DayCards from '../components/DayCards/DayCards';
 import Invalid from '../utils/Invalid/Invalid';
 import Button from '../utils/Button/Button';
+import Input from '../utils/Input/Input';
 
 const Container = styled.div`
   height: 100vh;
   background-image: url(${bg});
-  background-size: cover;
   background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
   display: flex;
   flex-direction: column;
   align-items: center;
+  overflow: auto;
 `;
 
 const Title = styled.h1`
@@ -29,15 +32,6 @@ const Subtitle = styled.h2`
   font-weight: 400;
   font-style: italic;
   margin-bottom: 0.2rem;
-`;
-
-const Input = styled.input`
-  padding: 0.5rem 2rem;
-  font-size: 2rem;
-  background-color: rgba(255, 255, 255, 0.7);
-  border: none;
-  border-radius: 0.3rem;
-  margin-top: 0.5rem;
 `;
 
 const APP_ID = '69911451';
@@ -96,7 +90,6 @@ const App = () => {
             const objDate = +obj.date.slice(0, 2);
             if (objDate > todaysDate) {
               const { date, sunrise_time: sunrise, sunset_time: sunset } = obj;
-              const wx = obj.Timeframes[4].wx_code;
               const sunsetFirst = sunset.slice(0, 2);
               const sunsetSecond = sunset.slice(2);
               const newSunset = `${sunsetFirst - 12 + sunsetSecond} PM`;
@@ -105,6 +98,10 @@ const App = () => {
               const newLow = `${obj.temp_min_f.toFixed(0)}°`;
               const newPrecip = `${obj.prob_precip_pct}%`;
               const newWind = `${obj.windspd_max_mph}mph`;
+              let wx = obj.Timeframes[4].wx_code;
+              if (obj.prob_precip_pct > 60) {
+                wx = 10;
+              }
               const newObj = {
                 date,
                 hi: newHi,
@@ -159,9 +156,10 @@ const App = () => {
       <Subtitle>(enter US zip code only, please)</Subtitle>
       {invalidZip ? <Invalid /> : null}
       <Input
+        type="text"
         maxLength="5"
         placeholder="Show me the weather in..."
-        onChange={e => onInputChangedHandler(e)}
+        changed={e => onInputChangedHandler(e)}
       />
       <Button type="button" clicked={onClickZipSubmit}>
         Let's see it!
