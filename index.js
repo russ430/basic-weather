@@ -14,9 +14,6 @@ app.use(cors());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
-if (process.env.NODE_ENV === 'production') {
-  app.use(express.static('/dist'));
-}
 
 app.get('/weather/fore/:z', async (req, res) => {
   const zip = req.params.z;
@@ -33,6 +30,8 @@ app.get('/weather/cur/:z', async (req, res) => {
   const json = await fetchCur.json();
   res.json(json);
 });
+
+app.use(express.static('client/build'));
 
 app.listen(port, () => console.log(`Running on ${port}`));
 
