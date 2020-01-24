@@ -34,8 +34,6 @@ const Subtitle = styled.h2`
   margin-bottom: 0.2rem;
 `;
 
-const APP_ID = '69911451';
-const APP_KEY = '4a2ac00be479232fe1d392bb09dae7f3';
 
 const App = () => {
   const [zip, setZip] = useState('');
