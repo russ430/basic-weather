@@ -62,27 +62,12 @@ const App = () => {
     }
   };
 
-  // const getData = z => {
-  //   const foreApi = () => {
-  //     return axios.get(`http://localhost:3001/weather/fore/${z}`);
-  //   };
-  //   const curApi = () => {
-  //     return axios.get(`http://localhost:3001/weather/cur/${z}`);
-  //   };
-  //   axios.all([foreApi(), curApi()]).then(
-  //     axios.spread((fore, cur) => {
-  //       console.log(fore);
-  //       console.log(cur);
-  //     })
-  //   );
-  // };
-
   const getData = z => {
     const foreApi = () => {
-      return axios.get(`http://localhost:3001/weather/fore/${z}`);
+      return axios.get(`/weather/fore/${z}`);
     };
     const curApi = () => {
-      return axios.get(`http://localhost:3001/weather/cur/${z}`);
+      return axios.get(`/weather/cur/${z}`);
     };
     axios
       .all([foreApi(), curApi()])
@@ -149,7 +134,7 @@ const App = () => {
         console.log(error);
         setShowToday(false);
         // eslint-disable-next-line no-undef
-        alert('You have entered a non-existent US Zip Code');
+        alert(error);
       });
   };
 
