@@ -34,9 +34,6 @@ const Subtitle = styled.h2`
   margin-bottom: 0.2rem;
 `;
 
-const APP_ID = '69911451';
-const APP_KEY = '4a2ac00be479232fe1d392bb09dae7f3';
-
 const App = () => {
   const [zip, setZip] = useState('');
   const [showToday, setShowToday] = useState(false);
@@ -65,22 +62,32 @@ const App = () => {
     }
   };
 
+  // const getData = z => {
+  //   const foreApi = () => {
+  //     return axios.get(`http://localhost:3001/weather/fore/${z}`);
+  //   };
+  //   const curApi = () => {
+  //     return axios.get(`http://localhost:3001/weather/cur/${z}`);
+  //   };
+  //   axios.all([foreApi(), curApi()]).then(
+  //     axios.spread((fore, cur) => {
+  //       console.log(fore);
+  //       console.log(cur);
+  //     })
+  //   );
+  // };
+
   const getData = z => {
-    const forecast = `http://api.weatherunlocked.com/api/forecast/us.${z}?app_id=${APP_ID}&app_key=${APP_KEY}`;
-    const current = `http://api.weatherunlocked.com/api/current/us.${z}?app_id=${APP_ID}&app_key=${APP_KEY}`;
-
-    console.log('[getData]');
-    const getCurrent = () => {
-      return axios.get(current);
+    const foreApi = () => {
+      return axios.get(`http://localhost:3001/weather/fore/${z}`);
     };
-    const getForecast = () => {
-      return axios.get(forecast);
+    const curApi = () => {
+      return axios.get(`http://localhost:3001/weather/cur/${z}`);
     };
-
     axios
-      .all([getCurrent(), getForecast()])
+      .all([foreApi(), curApi()])
       .then(
-        axios.spread((cur, fore) => {
+        axios.spread((fore, cur) => {
           const today = new Date();
           const todaysDate = today.getDate();
           const forecastDataArray = [];
@@ -174,9 +181,3 @@ const App = () => {
 };
 
 export default App;
-
-// const APP_ID = '69911451';
-// const APP_KEY = '4a2ac00be479232fe1d392bb09dae7f3';
-
-// const APP_ID2 = 'af02d97e';
-// const APP_KEY2 = '760c5bcc6e76230e4486b5946de351ab';
