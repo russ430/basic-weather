@@ -64,10 +64,10 @@ const App = () => {
 
   const getData = z => {
     const foreApi = () => {
-      return axios.get(`/weather/fore/${z}`);
+      return axios.get(`${process.env.PORT}/weather/fore/${z}`);
     };
     const curApi = () => {
-      return axios.get(`/weather/cur/${z}`);
+      return axios.get(`${process.env.PORT}/weather/cur/${z}`);
     };
     axios
       .all([foreApi(), curApi()])
