@@ -14,6 +14,7 @@ app.use(cors());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
+app.use(express.static(path.join(__dirname, 'client', 'build')));
 
 app.get('/weather/fore/:z', async (req, res) => {
   const zip = req.params.z;
@@ -31,7 +32,6 @@ app.get('/weather/cur/:z', async (req, res) => {
   res.json(json);
 });
 
-app.use(express.static('client/build'));
 
 app.get("*", (req, res) => {
   res.sendFile(path.resolve(__dirname, 'client', 'build', 'index.html'));
