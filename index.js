@@ -17,10 +17,11 @@ app.use(bodyParser.json());
 app.use(express.static(path.join(__dirname, 'client', 'build')));
 
 app.get('/weather/fore/:z', async (req, res) => {
-  const zip = req.params.z;
-  const foreApiUrl = `http://api.weatherunlocked.com/api/forecast/us.${zip}?app_id=${creds.APP_ID}&app_key=${creds.API_KEY}`;
-  const fetchFore = await fetch(foreApiUrl);
-  const json = await fetchFore.json();
+  // const zip = req.params.z;
+  // const foreApiUrl = `http://api.weatherunlocked.com/api/forecast/us.${zip}?app_id=${creds.APP_ID}&app_key=${creds.API_KEY}`;
+  // const fetchFore = await fetch(foreApiUrl);
+  // const json = await fetchFore.json();
+  const json = 'this works'
   res.json(json);
 });
 
