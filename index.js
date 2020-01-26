@@ -32,6 +32,11 @@ app.get('/weather/cur/:z', async (req, res) => {
   res.status(200).json(json);
 });
 
+
+app.get("*", (req, res) => {
+  res.sendFile(path.resolve(__dirname, 'client', 'build', 'index.html'));
+});
+
 app.listen(port, () => console.log(`Running on ${port}`));
 
 module.exports = app;
