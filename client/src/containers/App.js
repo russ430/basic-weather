@@ -73,6 +73,7 @@ const App = () => {
       .all([foreApi(), curApi()])
       .then(
         axios.spread((fore, cur) => {
+          console.log('')
           const today = new Date();
           const todaysDate = today.getDate();
           const forecastDataArray = [];

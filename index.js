@@ -17,12 +17,11 @@ app.use(bodyParser.json());
 app.use(express.static(path.join(__dirname, 'client', 'build')));
 
 app.get('/weather/fore/:z', async (req, res) => {
-  // const zip = req.params.z;
-  // const foreApiUrl = `http://api.weatherunlocked.com/api/forecast/us.${zip}?app_id=${creds.APP_ID}&app_key=${creds.API_KEY}`;
-  // const fetchFore = await fetch(foreApiUrl);
-  // const json = await fetchFore.json();
-  const json = 'this works'
-  res.json(json);
+  const zip = req.params.z;
+  const foreApiUrl = `http://api.weatherunlocked.com/api/forecast/us.${zip}?app_id=${creds.APP_ID}&app_key=${creds.API_KEY}`;
+  const fetchFore = await fetch(foreApiUrl);
+  const json = await fetchFore.json();
+  res.status(200).json(json);
 });
 
 app.get('/weather/cur/:z', async (req, res) => {
@@ -30,12 +29,7 @@ app.get('/weather/cur/:z', async (req, res) => {
   const curApiUrl = `http://api.weatherunlocked.com/api/current/us.${zip}?app_id=${creds.APP_ID}&app_key=${creds.API_KEY}`;
   const fetchCur = await fetch(curApiUrl);
   const json = await fetchCur.json();
-  res.json(json);
-});
-
-
-app.get("*", (req, res) => {
-  res.sendFile(path.resolve(__dirname, 'client', 'build', 'index.html'));
+  res.status(200).json(json);
 });
 
 app.listen(port, () => console.log(`Running on ${port}`));
