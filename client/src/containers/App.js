@@ -63,7 +63,7 @@ const App = () => {
     // if zip includes numbers only it's length will be checked
     // if input !== numbers, zip state is never changed from '', therefore z.length < 5
     if (z.length === 5) {
-      setInvalidZipLength(false);
+      setInvalidZip(false);
       setCurrentDayData(null);
       setShowForecast(false);
       getData(z);
