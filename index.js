@@ -16,6 +16,8 @@ app.use(bodyParser.json());
 
 app.use(express.static(path.join(__dirname, 'client', 'build')));
 
+app.listen(port, () => console.log(`Running on ${port}`));
+
 app.get('/weather/fore/:z', async (req, res) => {
   const zip = req.params.z;
   const foreApiUrl = `http://api.weatherunlocked.com/api/forecast/us.${zip}?app_id=${creds.APP_ID}&app_key=${creds.API_KEY}`;
@@ -32,11 +34,5 @@ app.get('/weather/cur/:z', async (req, res) => {
   res.status(200).json(json);
 });
 
-
-app.get("*", (req, res) => {
-  res.sendFile(path.resolve(__dirname, 'client', 'build', 'index.html'));
-});
-
-app.listen(port, () => console.log(`Running on ${port}`));
 
 module.exports = app;
