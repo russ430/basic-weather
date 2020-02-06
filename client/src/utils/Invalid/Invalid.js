@@ -7,6 +7,6 @@ const Invalid = styled.p`
   color: darkred;
 `;
 
-const invalid = () => <Invalid>Invalid Zip Code. Must be at least 5 digits long.</Invalid>;
+const invalid = props => <Invalid>{props.children}</Invalid>;
 
 export default invalid;

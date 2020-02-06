@@ -41,9 +41,18 @@ const App = () => {
   const [forecastData, setForecastData] = useState(null);
   const [currentDayData, setCurrentDayData] = useState(null);
   const [invalidZip, setInvalidZip] = useState(false);
+  const [zipError, setZipError] = useState(false);
 
   const onInputChangedHandler = e => {
-    setZip(e.target.value);
+    setZipError(false);
+    //checking if the input is a number
+    const isNum = /^\d*$/;
+    if(isNum.test(e.target.value)) {
+      setInvalidZip(false);
+      setZip(e.target.value);
+    } else {
+      setInvalidZip(true);
+    }
   };
 
   const onClickZipSubmit = () => {
@@ -51,13 +60,14 @@ const App = () => {
   };
 
   const checkZip = z => {
+    // if zip includes numbers only it's length will be checked
+    // if input !== numbers, zip state is never changed from '', therefore z.length < 5
     if (z.length === 5) {
-      setInvalidZip(false);
+      setInvalidZipLength(false);
       setCurrentDayData(null);
       setShowForecast(false);
       getData(z);
     } else {
-      // eslint-disable-next-line no-undef
       setInvalidZip(true);
     }
   };
@@ -133,8 +143,9 @@ const App = () => {
       .catch(error => {
         console.log(error);
         setShowToday(false);
+        setZipError(true);
         // eslint-disable-next-line no-undef
-        alert(error);
+        // alert('You may have entered an invalid Zip Code. If not, something must be wrong on our end. Try again later!');
       });
   };
 
@@ -146,7 +157,8 @@ const App = () => {
     <Container>
       <Title>What's the Weather like?</Title>
       <Subtitle>(enter US zip code only, please)</Subtitle>
-      {invalidZip ? <Invalid /> : null}
+      {zipError && <Invalid>You may have entered an invalid US Zip Code or our servers are temporarily down</Invalid>}
+      {invalidZip && <Invalid>Zip Codes must be at least 5 digits long and numbers only</Invalid>}
       <Input
         type="text"
         maxLength="5"
@@ -156,11 +168,11 @@ const App = () => {
       <Button type="button" clicked={onClickZipSubmit}>
         Let's see it!
       </Button>
+      {forecastData !== null ? <Button clicked={showForecastHandler}>7 Day Forecast</Button> : null}
       <div style={{ display: 'flex', justifyContent: 'center', flexWrap: 'wrap' }}>
-        {showToday ? <DayCard data={currentDayData} /> : null}
-        {showForecast ? <DayCards data={forecastData} /> : null}
+        {showToday && <DayCard data={currentDayData} />}
+        {showForecast && <DayCards data={forecastData} />}
       </div>
-      {forecastData !== null ? <Button clicked={showForecastHandler}>See Forecast</Button> : null}
     </Container>
   );
 };
