@@ -21,7 +21,7 @@ app.get('/weather/fore/:z', async (req, res) => {
   const zip = req.params.z;
   const app_id = process.env.APP_ID;
   const api_key = process.env.API_KEY;
-  const foreApiUrl = `http://api.weatherunlocked.com/api/forecast/us.${zip}?app_id=${app_id}&app_key=${creds.API_KEY}`;
+  const foreApiUrl = `http://api.weatherunlocked.com/api/forecast/us.${zip}?app_id=${app_id}&app_key=${api_key}`;
   const fetchFore = await fetch(foreApiUrl);
   const data = await fetchFore.json();
   res.json(data);
