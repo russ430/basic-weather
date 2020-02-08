@@ -26,7 +26,7 @@ const Title = styled.h1`
   color: #fff;
 `;
 
-const Subtitle = styled.h2`
+const Subtitle = styled.label`
   font-size: 2rem;
   color: #fff;
   font-weight: 400;
@@ -156,10 +156,12 @@ const App = () => {
   return (
     <Container>
       <Title>What's the Weather like?</Title>
-      <Subtitle>(enter US zip code only, please)</Subtitle>
+      <Subtitle htmlFor="zip code" >(enter US zip code only, please)</Subtitle>
       {zipError && <Invalid>You may have entered an invalid US Zip Code or our servers are temporarily down</Invalid>}
       {invalidZip && <Invalid>Zip Codes must be at least 5 digits long and numbers only</Invalid>}
       <Input
+        name="zip code"
+        aria-label="Zip Code"
         type="text"
         maxLength="5"
         placeholder="Show me the weather in..."
@@ -168,9 +170,12 @@ const App = () => {
       <Button type="button" clicked={onClickZipSubmit}>
         Let's see it!
       </Button>
+      {/* only render forecast button when zip code is entered and data retrieved */}
       {forecastData !== null ? <Button clicked={showForecastHandler}>7 Day Forecast</Button> : null}
       <div style={{ display: 'flex', justifyContent: 'center', flexWrap: 'wrap' }}>
+        {/* only show day card when data is being retrieved */}
         {showToday && <DayCard data={currentDayData} />}
+        {/* only show 7 day forecast cards when forecast button is clicked */}
         {showForecast && <DayCards data={forecastData} />}
       </div>
     </Container>

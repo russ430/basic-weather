@@ -8,6 +8,7 @@ const logger = require('morgan');
 
 const port = process.env.PORT || 3001;
 
+app.listen()
 app.use(logger('dev'));
 app.use(cors());
 app.use(bodyParser.urlencoded({ extended: true }));
