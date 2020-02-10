@@ -7,6 +7,7 @@ import DayCards from '../components/DayCards/DayCards';
 import Invalid from '../utils/Invalid/Invalid';
 import Button from '../utils/Button/Button';
 import Input from '../utils/Input/Input';
+import Footer from '../components/Footer/Footer';
 
 const Container = styled.div`
   height: 100vh;
@@ -18,6 +19,7 @@ const Container = styled.div`
   flex-direction: column;
   align-items: center;
   overflow: auto;
+  position: relative;
 `;
 
 const Title = styled.h1`
@@ -185,6 +187,7 @@ const App = () => {
         {/* only show 7 day forecast cards when forecast button is clicked */}
         {showForecast && <DayCards data={forecastData} />}
       </div>
+      <Footer />
     </Container>
   );
 };

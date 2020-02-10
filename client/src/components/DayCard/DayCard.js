@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import Icon from './Icon/Icon';
+import Icon from '../../utils/Icon/Icon';
 import DataBox from './DataBox/DataBox';
 import Time from './Time/Time';
 import Spinner from '../../utils/Spinner/Spinner';

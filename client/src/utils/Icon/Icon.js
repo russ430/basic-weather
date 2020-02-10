@@ -1,10 +1,11 @@
 import React from 'react';
 import styled from 'styled-components';
-import Sunny from '../../../assets/svgs/sunny.svg';
-import Rainy from '../../../assets/svgs/rain.svg';
-import Snow from '../../../assets/svgs/snow.svg';
-import Partly from '../../../assets/svgs/partly-cl.svg';
-import Thunder from '../../../assets/svgs/thunder.svg';
+import Sunny from '../../assets/svgs/sunny.svg';
+import Rainy from '../../assets/svgs/rain.svg';
+import Snow from '../../assets/svgs/snow.svg';
+import Partly from '../../assets/svgs/partly-cl.svg';
+import Thunder from '../../assets/svgs/thunder.svg';
+import Github from '../../assets/svgs/github.svg';
 
 const icon = props => {
   const svgCode = props.code;
@@ -23,16 +24,20 @@ const icon = props => {
     iconSVG = Rainy;
   } else if (svgCode === 29 || svgCode === 91 || svgCode === 92) {
     iconSVG = Thunder;
+  } else if (svgCode === 2000) {
+    iconSVG = Github;
   } else {
     iconSVG = Snow;
   }
 
   const Icon = styled(iconSVG)`
-    width: 10rem;
+    width: ${p => (p.size ? p.size : '10rem')};
+    height: ${p => (p.size ? p.size : '10rem')};
     margin: 1.5rem 0;
+    fill: ${p => (p.fill ? p.fill : null)};
   `;
 
-  return <Icon />;
+  return <Icon fill={props.fill} size={props.size}/>;
 };
 
 export default icon;
