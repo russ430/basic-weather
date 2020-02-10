@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useRef, useEffect } from 'react';
 import styled from 'styled-components';
 
 const Input = styled.input`
@@ -10,13 +10,24 @@ const Input = styled.input`
   margin-top: 0.5rem;
 `;
 
-const input = props => (
-  <Input
-    onChange={props.changed}
-    maxLength={props.maxLength}
-    type={props.type}
-    placeholder={props.placeholder}
-  />
-);
+const input = props => {
+  const inputRef = useRef(null)
+
+  useEffect(() => {
+    inputRef.current.focus();
+  });
+
+  return (
+    <Input
+      onChange={props.changed}
+      maxLength={props.maxLength}
+      type={props.type}
+      placeholder={props.placeholder}
+      ref={inputRef}
+      value={props.value}
+    />
+  );
+}
+
 
 export default input;

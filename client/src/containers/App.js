@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import axios from 'axios';
 import DayCard from '../components/DayCard/DayCard';
@@ -54,6 +54,11 @@ const App = () => {
       setInvalidZip(true);
     }
   };
+
+  const onFormSubmit = e => {
+    e.preventDefault();
+    checkZip(zip);
+  }
 
   const onClickZipSubmit = () => {
     checkZip(zip);
@@ -156,20 +161,22 @@ const App = () => {
   return (
     <Container>
       <Title>What's the Weather like?</Title>
-      <Subtitle htmlFor="zip code" >(enter US zip code only, please)</Subtitle>
-      {zipError && <Invalid>You may have entered an invalid US Zip Code or our servers are temporarily down</Invalid>}
-      {invalidZip && <Invalid>Zip Codes must be at least 5 digits long and numbers only</Invalid>}
-      <Input
-        name="zip code"
-        aria-label="Zip Code"
-        type="text"
-        maxLength="5"
-        placeholder="Show me the weather in..."
-        changed={e => onInputChangedHandler(e)}
-      />
-      <Button type="button" clicked={onClickZipSubmit}>
-        Let's see it!
-      </Button>
+      <form style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}onSubmit={onFormSubmit}>
+        <Subtitle htmlFor="zip code" >(enter US zip code only, please)</Subtitle>
+        <Input
+          name="zip code"
+          aria-label="Zip Code"
+          type="text"
+          maxLength="5"
+          placeholder="Show me the weather in..."
+          changed={e => onInputChangedHandler(e)}
+          />
+        <Button type="submit" clicked={onClickZipSubmit}>
+          Let's see it!
+        </Button>
+      </form>
+        {zipError && <Invalid>You may have entered an invalid US Zip Code or our servers are temporarily down</Invalid>}
+        {invalidZip && <Invalid>Zip Codes must be at least 5 digits long and numbers only</Invalid>}
       {/* only render forecast button when zip code is entered and data retrieved */}
       {forecastData !== null ? <Button clicked={showForecastHandler}>7 Day Forecast</Button> : null}
       <div style={{ display: 'flex', justifyContent: 'center', flexWrap: 'wrap' }}>

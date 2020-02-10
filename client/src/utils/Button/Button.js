@@ -8,7 +8,8 @@ const Button = styled.button`
   cursor: pointer;
   color: black;
   border-radius: 0.3rem;
-  margin: 0.5rem 0;
+  margin: 0.5rem auto;
+  align-self: flex-start;
 `;
 
 const button = props => (
