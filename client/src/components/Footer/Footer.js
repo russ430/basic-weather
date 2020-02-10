@@ -5,11 +5,7 @@ import Icon from '../../utils/Icon/Icon';
 const Container = styled.footer`
   color: #fff;
   text-align: center;
-  position: absolute;
-  bottom: 0;
   padding: 0.5rem;
-  background-color: #060900;
-  width: 100%;
   
   a {
     color: #fff;
