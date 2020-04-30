@@ -1,0 +1,25 @@
+{
+  "files": {
+    "main.css": "/static/css/main.0b382822.chunk.css",
+    "main.js": "/static/js/main.ec32038f.chunk.js",
+    "main.js.map": "/static/js/main.ec32038f.chunk.js.map",
+    "runtime-main.js": "/static/js/runtime-main.98a2b520.js",
+    "runtime-main.js.map": "/static/js/runtime-main.98a2b520.js.map",
+    "static/js/2.f85d46c2.chunk.js": "/static/js/2.f85d46c2.chunk.js",
+    "static/js/2.f85d46c2.chunk.js.map": "/static/js/2.f85d46c2.chunk.js.map",
+    "index.html": "/index.html",
+    "precache-manifest.10b408810360727e8f0d4b1af6e665f5.js": "/precache-manifest.10b408810360727e8f0d4b1af6e665f5.js",
+    "service-worker.js": "/service-worker.js",
+    "static/css/main.0b382822.chunk.css.map": "/static/css/main.0b382822.chunk.css.map",
+    "static/js/2.f85d46c2.chunk.js.LICENSE.txt": "/static/js/2.f85d46c2.chunk.js.LICENSE.txt",
+    "static/media/github.192a6620.svg": "/static/media/github.192a6620.svg",
+    "static/media/partly-cl.3582b69f.svg": "/static/media/partly-cl.3582b69f.svg",
+    "static/media/rain.3fde5592.svg": "/static/media/rain.3fde5592.svg"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.98a2b520.js",
+    "static/js/2.f85d46c2.chunk.js",
+    "static/css/main.0b382822.chunk.css",
+    "static/js/main.ec32038f.chunk.js"
+  ]
+}
