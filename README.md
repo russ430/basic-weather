@@ -1,6 +1,6 @@
 # Basic Weather
 
-A simple web application to find weather data in the US using a zip code. Gives you the current weather data and an option to view upcoming weather up to 7 days out.
+I developed this project to help better my understanding of working with API's and parsing the data from requests. I used OpenWeather's free weather API to request weather data for a specific zip code entered by the user.
 
 ## Live Demo
 
