@@ -1,6 +1,6 @@
 # Basic Weather
 
-I developed this project to help better my understanding of working with API's and parsing the data from requests. I used OpenWeather's free weather API to request weather data for a specific zip code entered by the user.
+I developed this project to help better my understanding of working with API's and parsing the data from requests. I used OpenWeather's free weather API to request weather data for a specific US zip code entered by the user.
 
 ## Live Demo
 
@@ -18,4 +18,4 @@ I developed this project to help better my understanding of working with API's a
 
 ## License
 
-This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details
+MIT
