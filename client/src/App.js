@@ -89,7 +89,7 @@ export default function App() {
     setForecast([]);
 
     axios
-      .get(`http://localhost:3001/weather/fore/${zipcode}`)
+      .get(`/weather/fore/${zipcode}`)
       .then(response => {
         parseData(response.data);
       })
