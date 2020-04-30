@@ -1,6 +1,14 @@
 import React from 'react';
 import styled from 'styled-components';
 
+export default function button({ children, clicked }) {
+  return (
+    <Button onClick={clicked} type="button">
+      {children}
+    </Button>
+  );
+}
+
 const Button = styled.button`
   padding: 1rem 1.5rem;
   background-color: #fff;
@@ -8,14 +16,5 @@ const Button = styled.button`
   cursor: pointer;
   color: black;
   border-radius: 0.3rem;
-  margin: 0.5rem auto;
-  align-self: flex-start;
+  margin: 1rem auto;
 `;
-
-const button = props => (
-  <Button onClick={props.clicked} type="button">
-    {props.children}
-  </Button>
-);
-
-export default button;

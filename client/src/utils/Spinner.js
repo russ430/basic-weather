@@ -1,6 +1,14 @@
 import React from 'react';
 import styled from 'styled-components';
 
+export default function spinner() {
+  return (
+    <Container>
+      <Spinner />
+    </Container>
+  );
+}
+
 const Container = styled.div`
   padding: 11rem 0;
 `;
@@ -17,8 +25,8 @@ const Spinner = styled.div`
     height: 64px;
     margin: 8px;
     border-radius: 50%;
-    border: 6px solid #4a6391;
-    border-color: #4a6391 transparent #4a6391 transparent;
+    border: 6px solid #fff;
+    border-color: #fff transparent #fff transparent;
     animation: lds-dual-ring 1.2s linear infinite;
   }
 
@@ -30,11 +38,3 @@ const Spinner = styled.div`
       transform: rotate(360deg);
     }
 `;
-
-const spinner = () => (
-  <Container>
-    <Spinner />
-  </Container>
-);
-
-export default spinner;
